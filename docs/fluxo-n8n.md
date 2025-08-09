@@ -52,7 +52,7 @@ N8N (Processamento)
 Evolution API (Envio)
 ↓
 WhatsApp Cliente
-
+![Texto descritivo da imagem](images/NOME-DA-SUA-IMAGEM.png)
 ---
 
 ## 📌 Observações
