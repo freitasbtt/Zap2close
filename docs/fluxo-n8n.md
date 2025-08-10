@@ -52,7 +52,7 @@ N8N (Processamento)
 Evolution API (Envio)
 ↓
 WhatsApp Cliente
-
+![FLuxo n8n](images/fluxo_n8n_whatsapp_sdr.png)
 ---
 
 ## 📌 Observações
