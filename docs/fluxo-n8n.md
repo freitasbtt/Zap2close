@@ -59,4 +59,5 @@ WhatsApp Cliente
 - Fluxo único com diferenciação por cliente reduz custo e complexidade.
 - Redis garante que mensagens sejam processadas na ordem correta.
 - Possível criar fluxos separados apenas para clientes de maior volume.
+- Postgree
 
