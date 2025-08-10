@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: always
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      # --- Conexão com o Banco de Dados PostgreSQL ---
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8nuser
+      - DB_POSTGRESDB_PASSWORD=p#D$0@@18 # Mude para uma senha forte!
+
+      # --- Conexão com o Redis para Fila de Processamento ---
+      - QUEUE_BULL_REDIS_ENABLE=true
+      - QUEUE_BULL_REDIS_HOST=redis
+      - QUEUE_BULL_REDIS_PORT=6379
+
+      # --- Configurações Gerais do N8N ---
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_DB=n8n
+      - POSTGRES_USER=n8nuser
+      - POSTGRES_PASSWORD=p#D$0@@18 # Use a mesma senha definida acima!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+
+volumes:
+  n8n_data:
+  postgres_data:
+  redis_data:
