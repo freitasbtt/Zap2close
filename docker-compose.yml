@@ -35,10 +35,12 @@ services:
   postgres:
     image: postgres:14
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=n8n
       - POSTGRES_USER=n8nuser
-      - POSTGRES_PASSWORD=p#D$0@@18 # Use a mesma senha definida acima!
+      - POSTGRES_PASSWORD=p#D$0@@18
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
