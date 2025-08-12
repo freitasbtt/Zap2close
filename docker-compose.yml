@@ -59,7 +59,7 @@ services:
     environment:
       SERVER_PORT: 8080
       # segurança/controle
-      AUTHENTICATION_API_KEY: "${EVOLUTION_MASTER_KEY:-troque_essa_chave}"
+      AUTHENTICATION_API_KEY: "${EVOLUTION_MASTER_KEY:9f8a7c8b3d0e1f2a4c5b6d7e8f9a0b1c2d3e4f5061728394a5b6c7d8e9f0a1b}"
       LOG_LEVEL: "info"
       TZ: "America/Sao_Paulo"
 
