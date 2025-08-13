@@ -61,11 +61,10 @@ services:
       - "8080:8080"
     environment:
       SERVER_PORT: 8080
-      AUTHENTICATION_API_KEY: ${EVOLUTION_MASTER_KEY}
+      AUTHENTICATION_API_KEY: ${AUTHENTICATION_API_KEY}
       LOG_LEVEL: info
       TZ: America/Sao_Paulo
-
-      # --- Persistência (v2) ---
+      CONFIG_SESSION_PHONE_VERSION: 2.3000.1025815458
       DATABASE_ENABLED: "true"
       DATABASE_PROVIDER: postgresql
       DATABASE_CONNECTION_URI: ${EVOLUTION_DATABASE_URI}
