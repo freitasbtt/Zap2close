@@ -41,17 +41,70 @@ Ele se conecta à Evolution API para receber eventos e processa os dados de acor
 ---
 
 ## 🖼 Diagrama Simplificado
-WhatsApp Cliente
-↓
-Evolution API
-↓
-Redis (Fila)
-↓
-N8N (Processamento)
-↓
-Evolution API (Envio)
-↓
-WhatsApp Cliente
+1. Mensagem chega no WhatsApp
+
+O cliente final envia uma mensagem para o número conectado na Evolution API.
+
+A Evolution dispara um Webhook para o n8n com os dados crus da mensagem (remoteJid, conversation, instance, apikey etc).
+
+2. Webhook Node (n8n)
+
+O Webhook Node recebe o evento HTTP da Evolution.
+
+Esse é o gatilho do fluxo (start).
+
+3. Code Node (normalização)
+
+O node Code transforma os dados crus em variáveis mais limpas:
+
+chatInput → texto da mensagem recebida.
+
+sessionId → identificador completo do contato (553171155225@s.whatsapp.net).
+
+number → número puro (553171155225).
+
+instance → nome da instância na Evolution (clienteteste).
+
+apikey → chave de autenticação da instância.
+
+sessionKey → chave formatada para o Redis (clienteteste_553171155225).
+
+👉 Essa é a base para garantir que cada mensagem seja única e não se misture.
+
+4. AI Agent (IA + Memória)
+
+O AI Agent recebe o chatInput.
+
+Ele está conectado a:
+
+Google Gemini Chat Model → gera a resposta.
+
+Redis Chat Memory → guarda o histórico daquela conversa (sessionKey).
+
+👉 Isso faz com que cada usuário tenha seu próprio contexto de conversa isolado.
+
+5. AI Output
+
+O AI Agent devolve um campo output com a resposta gerada pela IA.
+Exemplo: "Olá, tudo bem? Posso te ajudar com nossos produtos 🚗".
+
+6. HTTP Request (envio da resposta)
+
+O fluxo monta um POST para a Evolution API:
+
+URL: http://evolution_api:8080/message/sendText/{{instance}}
+
+Headers: apikey (da instância)
+
+Body:
+
+{
+  "number": "553171155225",
+  "text": "Olá, tudo bem? Posso te ajudar com nossos produtos 🚗"
+}
+
+
+A Evolution envia essa mensagem de volta para o WhatsApp do cliente final.
 ![FLuxo n8n](images/fluxo_n8n_whatsapp_sdr.png)
 ---
 
